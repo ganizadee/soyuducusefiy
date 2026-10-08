@@ -4,6 +4,8 @@ import { useState, type FormEvent } from "react";
 import { CheckCircle2, LoaderCircle } from "lucide-react";
 import { departments } from "@/lib/site";
 
+const STATIC_EXPORT = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
+
 type Status = { state: "idle" | "sending" } | { state: "done"; name: string } | { state: "error"; message: string };
 
 const today = () => {
@@ -18,17 +20,27 @@ export function AppointmentForm() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     setStatus({ state: "sending" });
     try {
-      const res = await fetch("/api/appointment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const body = (await res.json()) as { ok: boolean; message?: string };
-      if (!res.ok || !body.ok) throw new Error(body.message ?? "Xəta baş verdi");
-      setStatus({ state: "done", name: String(data.name).split(" ")[0] });
+      if (STATIC_EXPORT) {
+        // Statik versiya: müraciət Netlify Forms-a gedir (public/__forms.html)
+        const res = await fetch("/__forms.html", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ "form-name": "qebul", ...data }).toString(),
+        });
+        if (!res.ok) throw new Error("Müraciət göndərilmədi. Zəhmət olmasa, telefonla əlaqə saxlayın.");
+      } else {
+        const res = await fetch("/api/appointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const body = (await res.json()) as { ok: boolean; message?: string };
+        if (!res.ok || !body.ok) throw new Error(body.message ?? "Xəta baş verdi");
+      }
+      setStatus({ state: "done", name: data.name.split(" ")[0] });
       form.reset();
     } catch (error) {
       setStatus({

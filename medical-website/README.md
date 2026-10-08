@@ -63,6 +63,19 @@ Form `POST /api/appointment` ünvanına göndərilir (`app/api/appointment/route
 Route məlumatları yoxlayır, lakin heç yerdə saxlamır — müraciətləri almaq üçün
 oraya CRM, e-poçt və ya Telegram inteqrasiyası əlavə edin.
 
+## Statik versiya (Netlify Drop)
+
+```bash
+npm run build:static   # nəticə: out/ qovluğu
+```
+
+`out/` qovluğunu [app.netlify.com/drop](https://app.netlify.com/drop) səhifəsinə
+sürüşdürün — sayt bir neçə saniyəyə hazır olur. Statik versiyada server olmadığı
+üçün qeydiyyat formu müraciətləri **Netlify Forms**-a göndərir
+(`public/__forms.html`). Müraciətləri almaq üçün Netlify-də
+**Project configuration → Forms → Enable form detection** seçin və qovluğu
+yenidən yükləyin; müraciətlər **Forms** bölməsində görünəcək.
+
 ## Deploy
 
 Vercel-də layihəni import edərkən **Root Directory** olaraq `medical-website`
