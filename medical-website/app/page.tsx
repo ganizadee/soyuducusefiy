@@ -33,7 +33,6 @@ export default function Home() {
           id="ana-sehife"
           name="hero"
           frames={208}
-          length={4.2}
           focus={[
             [0, 0.72],
             [0.6, 0.7],
@@ -41,58 +40,65 @@ export default function Home() {
           ]}
           priority
           label="Həkim steteskopu taxır və onu sizə doğru uzadır"
-          className="seq--hero"
+          overlay={
+            <Beat to={0.06} fade={0.04} className="scroll-hint">
+              <span>Aşağı sürüşdürün</span>
+              <ArrowDown size={18} aria-hidden="true" />
+            </Beat>
+          }
         >
-          <Beat to={0.24} className="seq-copy">
-            <p className="eyebrow">{clinic.fullName} · Bakı</p>
-            <h1 className="display">
-              Sağlamlığınızı <span className="hl">dinləyirik</span>
-            </h1>
-            <p className="lead">
-              Hər nəfəs, hər ürək döyüntüsü bizim üçün önəmlidir. Təcrübəli həkimlər və müasir diaqnostika — bir
-              ünvanda.
-            </p>
-            <div className="actions">
-              <a className="btn btn--primary btn--lg" href="#qebul">
-                Qəbula yazıl <ArrowRight size={18} aria-hidden="true" />
-              </a>
-              <a className="btn btn--ghost btn--lg" href="#xidmetler">
-                Xidmətlər
-              </a>
+          <div className="panel panel--full">
+            <div className="seq-copy card card--bare">
+              <p className="eyebrow">{clinic.fullName} · Bakı</p>
+              <h1 className="display">
+                Sağlamlığınızı <span className="hl">dinləyirik</span>
+              </h1>
+              <p className="lead">
+                Hər nəfəs, hər ürək döyüntüsü bizim üçün önəmlidir. Təcrübəli həkimlər və müasir diaqnostika — bir
+                ünvanda.
+              </p>
+              <div className="actions">
+                <a className="btn btn--primary btn--lg" href="#qebul">
+                  Qəbula yazıl <ArrowRight size={18} aria-hidden="true" />
+                </a>
+                <a className="btn btn--ghost btn--lg" href="#xidmetler">
+                  Xidmətlər
+                </a>
+              </div>
             </div>
-          </Beat>
+          </div>
 
-          <Beat from={0.34} to={0.58} className="seq-copy">
-            <p className="eyebrow">Diqqətli yanaşma</p>
-            <h2 className="display display--md">
-              Tələsmədən dinləyir, <span className="hl">dəqiq</span> diaqnoz qoyuruq
-            </h2>
-            <p className="lead">
-              Hər qəbula kifayət qədər vaxt ayrılır — şikayətlərinizi ətraflı öyrənir, nəticələri sadə dillə izah
-              edirik.
-            </p>
-          </Beat>
+          <div className="panel">
+            <Reveal className="seq-copy card">
+              <p className="eyebrow">Diqqətli yanaşma</p>
+              <h2 className="display display--md">
+                Tələsmədən dinləyir, <span className="hl">dəqiq</span> diaqnoz qoyuruq
+              </h2>
+              <p className="lead">
+                Hər qəbula kifayət qədər vaxt ayrılır — şikayətlərinizi ətraflı öyrənir, nəticələri sadə dillə izah
+                edirik.
+              </p>
+            </Reveal>
+          </div>
 
-          <Beat from={0.72} className="seq-copy seq-copy--top">
-            <p className="eyebrow">Sizə bir addım yaxın</p>
-            <h2 className="display">
-              Sağlamlığınız <span className="hl">etibarlı əllərdə</span>
-            </h2>
-            <p className="lead">Ailə həkimindən dar ixtisaslı mütəxəssisə qədər 12 şöbə sizin xidmətinizdədir.</p>
-            <div className="actions">
-              <a className="btn btn--primary btn--lg" href="#qebul">
-                Qəbula yazıl <ArrowRight size={18} aria-hidden="true" />
-              </a>
-              <a className="btn btn--ghost btn--lg" href={clinic.phoneHref}>
-                <Phone size={18} aria-hidden="true" /> Zəng et
-              </a>
-            </div>
-          </Beat>
-
-          <Beat to={0.05} fade={0.04} className="scroll-hint">
-            <span>Aşağı sürüşdürün</span>
-            <ArrowDown size={18} aria-hidden="true" />
-          </Beat>
+          {/* Son kartı yuxarıda saxlayırıq ki, uzadılmış steteskopu örtməsin */}
+          <div className="panel panel--full panel--top">
+            <Reveal className="seq-copy card">
+              <p className="eyebrow">Sizə bir addım yaxın</p>
+              <h2 className="display display--md">
+                Sağlamlığınız <span className="hl">etibarlı əllərdə</span>
+              </h2>
+              <p className="lead">Ailə həkimindən dar ixtisaslı mütəxəssisə qədər 12 şöbə sizin xidmətinizdədir.</p>
+              <div className="actions">
+                <a className="btn btn--primary btn--lg" href="#qebul">
+                  Qəbula yazıl <ArrowRight size={18} aria-hidden="true" />
+                </a>
+                <a className="btn btn--ghost btn--lg" href={clinic.phoneHref}>
+                  <Phone size={18} aria-hidden="true" /> Zəng et
+                </a>
+              </div>
+            </Reveal>
+          </div>
         </ScrollSequence>
 
         {/* Rəqəmlər */}
@@ -110,37 +116,31 @@ export default function Home() {
         </section>
 
         {/* 2. Həkim xidmətləri təqdim edir */}
-        <ScrollSequence
-          id="xidmetler"
-          name="services"
-          frames={96}
-          length={3.6}
-          focus={0.7}
-          label="Həkim əli ilə xidmətləri təqdim edir"
-        >
-          <div className="seq-copy">
-            <Beat>
+        <ScrollSequence id="xidmetler" name="services" frames={96} focus={0.7} label="Həkim əli ilə xidmətləri təqdim edir">
+          <div className="panel panel--head">
+            <Reveal className="seq-copy card">
               <p className="eyebrow">Xidmətlərimiz</p>
               <h2 className="display display--md">
                 Sizə lazım olan hər şey — <span className="hl">bir ünvanda</span>
               </h2>
-            </Beat>
-            <ul className="feature-list">
-              {featuredServices.map((s, i) => (
-                <li key={s.title}>
-                  <Beat from={0.16 + i * 0.11}>
-                    <span className="feature-list__icon">
-                      <Icon name={s.icon} />
-                    </span>
-                    <span>
-                      <strong>{s.title}</strong>
-                      <small>{s.text}</small>
-                    </span>
-                  </Beat>
-                </li>
-              ))}
-            </ul>
+            </Reveal>
           </div>
+          <ul className="card-stack">
+            {featuredServices.map((s) => (
+              <li key={s.title}>
+                <Reveal className="seq-copy mini-card">
+                  <span className="mini-card__icon">
+                    <Icon name={s.icon} />
+                  </span>
+                  <span>
+                    <strong>{s.title}</strong>
+                    <small>{s.text}</small>
+                  </span>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+          <div className="panel panel--tail" aria-hidden="true" />
         </ScrollSequence>
 
         {/* Bütün şöbələr */}
@@ -172,33 +172,33 @@ export default function Home() {
           id="reqemsal"
           name="digital"
           frames={96}
-          length={3.4}
           focus={0.72}
           label="Həkim planşetdə pasiyentin məlumatlarına baxır"
         >
-          <div className="seq-copy">
-            <Beat>
+          <div className="panel panel--head">
+            <Reveal className="seq-copy card">
               <p className="eyebrow">Rəqəmsal klinika</p>
               <h2 className="display display--md">
                 Sağlamlığınız <span className="hl">ovucunuzun içində</span>
               </h2>
-            </Beat>
-            <ul className="feature-list feature-list--cards">
-              {digitalFeatures.map((f, i) => (
-                <li key={f.title}>
-                  <Beat from={0.14 + i * 0.13}>
-                    <span className="feature-list__icon">
-                      <Icon name={f.icon} />
-                    </span>
-                    <span>
-                      <strong>{f.title}</strong>
-                      <small>{f.text}</small>
-                    </span>
-                  </Beat>
-                </li>
-              ))}
-            </ul>
+            </Reveal>
           </div>
+          <ul className="card-stack">
+            {digitalFeatures.map((f) => (
+              <li key={f.title}>
+                <Reveal className="seq-copy mini-card">
+                  <span className="mini-card__icon">
+                    <Icon name={f.icon} />
+                  </span>
+                  <span>
+                    <strong>{f.title}</strong>
+                    <small>{f.text}</small>
+                  </span>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+          <div className="panel panel--tail" aria-hidden="true" />
         </ScrollSequence>
 
         {/* Niyə biz + necə işləyirik */}
@@ -242,25 +242,10 @@ export default function Home() {
           id="hekimler"
           name="team"
           frames={96}
-          length={3.6}
           focus={0.69}
           label="Klinikanın üç həkimi birlikdə"
-          overlayClassName="seq__overlay--scrim"
-        >
-          <div className="seq-copy seq-copy--narrow">
-            <Beat>
-              <p className="eyebrow">Həkimlərimiz</p>
-              <h2 className="display display--md">
-                Peşəkar komanda, <span className="hl">insani yanaşma</span>
-              </h2>
-              <p className="lead">
-                Həkimlərimiz Azərbaycanda və xaricdə təhsil alıb, mütəmadi olaraq beynəlxalq konfranslarda ixtisasını
-                artırır.
-              </p>
-            </Beat>
-          </div>
-          {doctors.map((d, i) => (
-            <Anchor key={d.name} x={[0.47, 0.69, 0.875][i]} y={0.6} from={0.22 + i * 0.12}>
+          overlay={doctors.map((d, i) => (
+            <Anchor key={d.name} x={[0.47, 0.69, 0.875][i]} y={0.6} from={0.3 + i * 0.12}>
               <span className="tag">
                 <span className="tag__dot" aria-hidden="true" />
                 <span>
@@ -270,6 +255,20 @@ export default function Home() {
               </span>
             </Anchor>
           ))}
+        >
+          <div className="panel panel--full">
+            <Reveal className="seq-copy seq-copy--narrow card">
+              <p className="eyebrow">Həkimlərimiz</p>
+              <h2 className="display display--md">
+                Peşəkar komanda, <span className="hl">insani yanaşma</span>
+              </h2>
+              <p className="lead">
+                Həkimlərimiz Azərbaycanda və xaricdə təhsil alıb, mütəmadi olaraq beynəlxalq konfranslarda ixtisasını
+                artırır.
+              </p>
+            </Reveal>
+          </div>
+          <div className="panel" aria-hidden="true" />
         </ScrollSequence>
 
         <section className="section section--soft" aria-labelledby="hekim-heyeti">
@@ -299,39 +298,29 @@ export default function Home() {
         </section>
 
         {/* 5. Başı ilə təsdiqləyən həkim — dəvət */}
-        <ScrollSequence
-          id="devet"
-          name="cta"
-          frames={96}
-          length={3}
-          focus={0.72}
-          label="Həkim gülümsəyərək başı ilə təsdiq edir"
-        >
-          <div className="seq-copy">
-            <Beat>
+        <ScrollSequence id="devet" name="cta" frames={96} focus={0.72} label="Həkim gülümsəyərək başı ilə təsdiq edir">
+          <div className="panel panel--full">
+            <Reveal className="seq-copy card">
               <p className="eyebrow">Qəbula yazılın</p>
-              <h2 className="display">
+              <h2 className="display display--md">
                 Sizi <span className="hl">gözləyirik</span>
               </h2>
-            </Beat>
-            <ul className="check-list">
-              {["Təyin olunmuş vaxtda, növbəsiz qəbul", "Qiymətlər əvvəlcədən bəlli", "Pulsuz avtomobil dayanacağı"].map(
-                (item, i) => (
-                  <li key={item}>
-                    <Beat from={0.2 + i * 0.12}>
+              <ul className="check-list">
+                {["Təyin olunmuş vaxtda, növbəsiz qəbul", "Qiymətlər əvvəlcədən bəlli", "Pulsuz avtomobil dayanacağı"].map(
+                  (item) => (
+                    <li key={item}>
                       <Check size={18} aria-hidden="true" />
                       {item}
-                    </Beat>
-                  </li>
-                ),
-              )}
-            </ul>
-            <Beat from={0.56}>
+                    </li>
+                  ),
+                )}
+              </ul>
               <a className="btn btn--primary btn--lg" href="#qebul">
                 Formu doldur <ArrowRight size={18} aria-hidden="true" />
               </a>
-            </Beat>
+            </Reveal>
           </div>
+          <div className="panel panel--tail" aria-hidden="true" />
         </ScrollSequence>
 
         {/* Qeydiyyat formu */}
