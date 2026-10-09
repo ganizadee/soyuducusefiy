@@ -18,8 +18,8 @@ Production: `npm run build && npm start`.
 
 | Bölmə | Video (kadrlar) | Məzmun |
 | --- | --- | --- |
-| Giriş | Steteskoplu həkim — `public/frames/hero` (208 kadr) | Əsas başlıq və 2 kart |
-| Xidmətlər | Təqdimat jesti — `public/frames/services` (96) | Xidmət kartları həkimin əlinin yanından keçir |
+| Giriş | Steteskoplu həkim — `public/frames/hero` (208 kadr) | Əsas başlıq, 3 mərhələli mətn |
+| Xidmətlər | Təqdimat jesti — `public/frames/services` (96) | Həkim əli ilə xidmətləri “təqdim edir” |
 | Onlayn | Planşetli həkim — `public/frames/digital` (96) | Rəqəmsal xidmətlər |
 | Həkimlər | Üç həkim — `public/frames/team` (96) | Həkimlərin üzərində ad etiketləri |
 | Dəvət | Başı ilə təsdiqləyən həkim — `public/frames/cta` (96) | Qəbula çağırış |
@@ -31,16 +31,11 @@ onlayn qeydiyyat formu, tez-tez verilən suallar və footer.
 
 `components/ScrollSequence.tsx`:
 
-- **`ScrollSequence`** — video `sticky` canvas-da sabit qalır, `children` isə onun
-  üzərində adi scroll ilə aşağıdan yuxarı qalxan kartlardır. Bölmə nə qədər
-  scroll edilibsə, video da o qədər irəliləyir; keçid yumşaldılır.
-- Bölmənin uzunluğu (videonun nə qədər scroll-da oynadığı) kadr sayından yox,
-  kartların və `.panel` bloklarının hündürlüyündən asılıdır (`app/globals.css`:
-  `.panel`, `.panel--full`, `.panel--head`, `.panel--tail`, `.card-stack` gap).
+- **`ScrollSequence`** — hündür bölmə (`length` × ekran hündürlüyü) və onun içində
+  `sticky` canvas. Scroll irəlilədikcə uyğun kadr çəkilir; keçid yumşaldılır.
 - Kadrlar bölməyə 2 ekran qalmış mərhələlərlə yüklənir (əvvəl hər 16-cı, sonra 8-ci…),
   ona görə animasiya bütün kadrlar gəlməmiş də işləyir.
-- **`Beat`** — videonun üzərində sabit qalıb `from`/`to` (0–1) aralığında görünən blok
-  (`overlay` prop-u ilə; məs. “Aşağı sürüşdürün” işarəsi).
+- **`Beat`** — `from`/`to` (0–1) aralığında görünən mətn bloku.
 - **`Anchor`** — videodakı konkret nöqtəyə “yapışan” etiket (məs. həkimin adı).
 - `focus` — dar (telefon) ekranlarda kadrın hansı hissəsinin mərkəzdə qalacağı.
 

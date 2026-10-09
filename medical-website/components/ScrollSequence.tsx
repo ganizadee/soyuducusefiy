@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 import { preload } from "react-dom";
@@ -97,18 +98,15 @@ type ScrollSequenceProps = {
   /** public/frames altındakı qovluq adı */
   name: string;
   frames: number;
+  /** Scroll uzunluğu — ekran hündürlüyünün neçə misli */
+  length?: number;
   focus?: Focus;
   /** İlk ekrandakı animasiya üçün kadrları dərhal yüklə */
   priority?: boolean;
   /** Ekran oxuyucular üçün təsvir */
   label: string;
   className?: string;
-  /** Videonun üzərində sabit qalan elementlər (Beat, Anchor) */
-  overlay?: ReactNode;
-  /**
-   * Video arxada sabit qalarkən adi scroll ilə yuxarı qalxan kartlar.
-   * Bölmənin uzunluğu (deməli videonun nə qədər scroll-da oynadığı) bunların hündürlüyündən asılıdır.
-   */
+  overlayClassName?: string;
   children?: ReactNode;
 };
 
@@ -116,11 +114,12 @@ export function ScrollSequence({
   id,
   name,
   frames,
+  length = 4,
   focus = 0.5,
   priority = false,
   label,
   className,
-  overlay,
+  overlayClassName,
   children,
 }: ScrollSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -317,7 +316,12 @@ export function ScrollSequence({
 
   return (
     <SequenceContext.Provider value={api}>
-      <section ref={sectionRef} id={id} className={["seq", className].filter(Boolean).join(" ")}>
+      <section
+        ref={sectionRef}
+        id={id}
+        className={["seq", className].filter(Boolean).join(" ")}
+        style={{ "--seq-length": length } as CSSProperties}
+      >
         <div
           className="seq__stage"
           // İlk ekranda JS yüklənənə qədər birinci kadr fon şəkli kimi görünür
@@ -325,12 +329,11 @@ export function ScrollSequence({
         >
           <canvas ref={canvasRef} className="seq__canvas" role="img" aria-label={label} />
           <div className="seq__fade" aria-hidden="true" />
-          {overlay && <div className="seq__overlay">{overlay}</div>}
+          <div className={["seq__overlay", overlayClassName].filter(Boolean).join(" ")}>{children}</div>
           <span className="seq__loader" aria-hidden="true">
             <span ref={barRef} />
           </span>
         </div>
-        <div className="seq__track">{children}</div>
       </section>
     </SequenceContext.Provider>
   );
