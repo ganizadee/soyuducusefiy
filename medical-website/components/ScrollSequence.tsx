@@ -168,6 +168,8 @@ export function ScrollSequence({
     let current = -1;
     let drawnIndex = -1;
     let notified = -1;
+    // Kadr navbarın altından başlayır ki, başın üst hissəsi header-in arxasında qalmasın
+    let insetTop = 0;
 
     const nearestLoaded = (index: number) => {
       for (let d = 0; d < frames; d++) {
@@ -194,22 +196,25 @@ export function ScrollSequence({
         canvas.width = w;
         canvas.height = h;
         drawnIndex = -1;
+        insetTop = parseFloat(getComputedStyle(stage).getPropertyValue("--header-h")) || 0;
       }
 
       const index = nearestLoaded(Math.round(progress * (frames - 1)));
       const image = index >= 0 ? images[index] : undefined;
       const ratio = image ? image.naturalWidth / image.naturalHeight : 16 / 9;
+      const areaH = vh - insetTop;
       let dw = vw;
       let dh = vw / ratio;
-      if (dh < vh) {
-        dh = vh;
-        dw = vh * ratio;
+      if (dh < areaH) {
+        dh = areaH;
+        dw = areaH * ratio;
       }
       const fx = focusAt(focusRef.current, progress);
       // Geniş ekranda kadr olduğu kimi qalır, portretdə fokus nöqtəsi mərkəzə çəkilir.
-      const screenX = 0.5 + (fx - 0.5) * clamp((vw / vh - 0.8) / 0.6);
+      const screenX = 0.5 + (fx - 0.5) * clamp((vw / areaH - 0.8) / 0.6);
       const x = clamp(screenX * vw - fx * dw, vw - dw, 0);
-      const y = (vh - dh) * 0.3;
+      // Kadr yuxarıya bağlanır: geniş ekranlarda artıq hissə başdan yox, aşağıdan kəsilir
+      const y = insetTop;
 
       const prev = api.state.layout;
       const changed =
@@ -219,6 +224,7 @@ export function ScrollSequence({
       }
 
       if (image && (index !== drawnIndex || changed)) {
+        ctx.clearRect(0, 0, w, h);
         ctx.imageSmoothingQuality = "high";
         ctx.drawImage(image, x * dpr, y * dpr, dw * dpr, dh * dpr);
         drawnIndex = index;
@@ -325,7 +331,7 @@ export function ScrollSequence({
         <div
           className="seq__stage"
           // İlk ekranda JS yüklənənə qədər birinci kadr fon şəkli kimi görünür
-          style={priority ? { backgroundImage: `url(${poster})`, backgroundPosition: `${posterX * 100}% 30%` } : undefined}
+          style={priority ? { backgroundImage: `url(${poster})`, backgroundPosition: `${posterX * 100}% 0%` } : undefined}
         >
           <canvas ref={canvasRef} className="seq__canvas" role="img" aria-label={label} />
           <div className="seq__fade" aria-hidden="true" />

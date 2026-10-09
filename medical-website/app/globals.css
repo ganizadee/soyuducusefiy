@@ -370,9 +370,13 @@ h3 {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  padding-top: var(--header-h);
   background-color: #fff;
   background-repeat: no-repeat;
   background-size: cover;
+  /* Poster (ilk kadr) də canvas kimi navbarın altından başlayır */
+  background-origin: content-box;
+  background-clip: content-box;
 }
 
 .seq__canvas {
